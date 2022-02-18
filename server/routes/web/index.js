@@ -18,7 +18,6 @@ module.exports = (app) => {
   const mongoose = require("mongoose");
   const Category = mongoose.model("Category");
   const Article = mongoose.model("Article");
-  const Hero = mongoose.model("Hero");
   //导入新闻数据
   router.get("/news/init", async (req, res) => {
     const parent = await Category.findOne({

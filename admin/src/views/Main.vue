@@ -13,10 +13,11 @@
             ><i class="el-icon-message"></i>内容管理</template
           >
           <el-menu-item-group>
-            <template slot="title">物品</template>
+            <template slot="title">杂志</template>
             <!-- 设置index，当点击时跳转到相应的index中去 -->
-            <el-menu-item index="/items/create">新建杂志</el-menu-item>
-            <el-menu-item index="/items/list">杂志列表</el-menu-item>
+            <el-menu-item index="/magazines/create">新建杂志</el-menu-item>
+            <el-menu-item index="/magazines/directory">新建杂志目录</el-menu-item>
+            <el-menu-item index="/magazines/list">杂志列表</el-menu-item>
           </el-menu-item-group>
           <!-- <el-menu-item-group>
             <template slot="title">英雄</template>

@@ -7,7 +7,7 @@
             <strong>{{ id ? "编辑" : "新建" }}杂志</strong>
           </div>
           <el-form style="margin-bottom: 50px" label-width="80px">
-            <el-row type="flex">
+            <el-row type="flex" align="bottom">
               <el-col :span="12">
                 <el-form-item label="封面" style="margin-bottom: 0">
                   <el-upload
@@ -41,29 +41,34 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="主办">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input v-model="model.host" style="width:100%"></el-input>
                 </el-form-item>
                 <el-form-item label="出版周期">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input v-model="model.cycle" style="width:100%"></el-input>
                 </el-form-item>
                 <el-form-item label="语种">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input
+                    v-model="model.language"
+                    style="width:100%"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="ISSN">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input v-model="model.ISSN" style="width:100%"></el-input>
                 </el-form-item>
                 <el-form-item label="CN">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input v-model="model.CN" style="width:100%"></el-input>
                 </el-form-item>
                 <el-form-item label="创刊时间">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
+                  <el-input
+                    v-model="model.initiateDate"
+                    style="width:100%"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item>
+            <el-form-item style="display:flex;justify-content: flex-end">
               <el-button type="primary" @click="save"> 提交</el-button>
             </el-form-item>
-            
           </el-form>
         </el-card>
       </el-col>
@@ -87,15 +92,15 @@ export default {
   methods: {
     async save() {
       if (this.id) {
-        await this.$http.put(`rest/items/${this.id}`, this.model);
-        this.$router.push("/items/list");
+        await this.$http.put(`rest/magazines/${this.id}`, this.model);
+        this.$router.push("/magazines/list");
       } else {
         if (this.model.name == "") {
           this.$message({ message: "请输入名称", type: "warning" });
           return false;
         } else {
-          await this.$http.post("rest/items", this.model);
-          this.$router.push("/items/list");
+          await this.$http.post("rest/magazines", this.model);
+          this.$router.push("/magazines/list");
         }
       }
       this.$message({
@@ -104,7 +109,7 @@ export default {
       });
     },
     async fetch() {
-      const res = await this.$http.get(`rest/items/${this.id}`);
+      const res = await this.$http.get(`rest/magazines/${this.id}`);
       this.model = res.data;
     },
     async fetchCategories() {

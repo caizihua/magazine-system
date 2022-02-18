@@ -18,19 +18,19 @@ module.exports = (app) => {
     const model = await req.Model.create(req.body);
     res.send(model);
   });
-  //1编辑分类编辑后更新的接口
+  //1编辑
   router.put("/:id", async (req, res) => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body);
     res.send(model);
   });
-  //2删除分类名的接口
+  //2删除
   router.delete("/:id", async (req, res) => {
     await req.Model.findByIdAndDelete(req.params.id, req.body);
     res.send({
       success: true,
     });
   });
-  //3分类列表的接口
+  //3分类列表
   router.get("/", async (req, res) => {
     //不应该是写死的parent因为可能有的模型没有parent,判断是否为分类模型，如果是的话，添加populate
     const queryOptions = {};
@@ -42,7 +42,7 @@ module.exports = (app) => {
     res.send(items);
   });
 
-  //4分类详情的接口
+  //4分类详情
   router.get("/:id", async (req, res) => {
     const model = await req.Model.findById(req.params.id);
     res.send(model);
@@ -102,6 +102,7 @@ module.exports = (app) => {
       token
     });
   });
+  //注册
   app.post("/admin/api/register", async (req, res) => {
     const user = await AdminUser.create(req.body);
     const token = jwt.sign({

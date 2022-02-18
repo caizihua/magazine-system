@@ -4,13 +4,11 @@ import Main from "../views/Main.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import CategoryEdit from "../views/CategoryEdit.vue";
+import DirectoryEdit from "../views/DirectoryEdit.vue";
 import CategoryList from "../views/CategoryList.vue";
 
 import MagEdit from "../views/MagEdit.vue";
 import MagList from "../views/MagList.vue";
-
-import HeroEdit from "../views/HeroEdit.vue";
-import HeroList from "../views/HeroList.vue";
 
 import ArticleEdit from "../views/ArticleEdit.vue";
 import ArticleList from "../views/ArticleList.vue";
@@ -57,33 +55,23 @@ const routes = [{
       },
 
       {
-        path: "/items/create",
+        path: "/magazines/create",
         component: MagEdit,
       },
       {
-        path: "/items/edit/:id",
+        path: "/magazines/edit/:id",
         component: MagEdit,
         props: true,
       },
       {
-        path: "/items/list",
+        path: "/magazines/directory",
+        component: DirectoryEdit,
+        props: true,
+      },
+      {
+        path: "/magazines/list",
         component: MagList,
       },
-
-      {
-        path: "/heroes/create",
-        component: HeroEdit,
-      },
-      {
-        path: "/heroes/edit/:id",
-        component: HeroEdit,
-        props: true,
-      },
-      {
-        path: "/heroes/list",
-        component: HeroList,
-      },
-
       {
         path: "/articles/create",
         component: ArticleEdit,
