@@ -3,7 +3,7 @@ import App from "./App.vue";
 import "./plugins/element.js";
 import router from "./router";
 import http from "./http";
-
+import "default-passive-events"
 import "./style.css";
 
 Vue.config.productionTip = false;

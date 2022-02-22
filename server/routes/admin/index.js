@@ -32,7 +32,6 @@ module.exports = (app) => {
   });
   //3分类列表
   router.get("/", async (req, res) => {
-    //不应该是写死的parent因为可能有的模型没有parent,判断是否为分类模型，如果是的话，添加populate
     const queryOptions = {};
     if (req.Model.modelName === "Category") {
       queryOptions.populate = "parent";
@@ -50,16 +49,12 @@ module.exports = (app) => {
 
   //6资源列表
   app.use(
-    //动态的resource接受接口参数,插入中间件，当调用接口是先调用函数，出现next()才处理接下来的
     "/admin/api/rest/:resource",
     authMiddleware(),
     resourceMiddleware(),
     router
   );
   //7上传文件代码
-  //express本身不具备自己处理文件的能力，需要中间件multer
-  //multer用于处理form-data或者multipart,会添加file对象到req中包含表单上传的文件信息
-  //dest属性表示在哪里存储文件,接受单个文件的上传名字为file，因为接口formData中的名字就是file
   const multer = require("multer");
   const upload = multer({
     dest: __dirname + "/../../uploads"
@@ -70,7 +65,6 @@ module.exports = (app) => {
     upload.single("file"),
     async (req, res) => {
       const file = req.file;
-      //添加访问路径，具体的就是file里面的filename，是二进制数据
       file.url = `http://localhost:3000/uploads/${file.filename}`;
       res.send(file);
     }
@@ -81,21 +75,17 @@ module.exports = (app) => {
       username,
       password
     } = req.body;
-    //根据用户名找用户,将password强制取出
     const user = await AdminUser.findOne({
       username
     }).select("+password");
     assert(
       username !== "", 422, "请输入用户名");
     assert(user, 422, "用户不存在");
-    //校验密码,将明文和密文进行比对
     const isValid = require("bcrypt").compareSync(password, user.password);
     assert(isValid, 422, "密码错误");
-    //返回token
     const token = jwt.sign({
         id: user._id,
       },
-      //只能得到一个参数，获取配置
       app.get("secret")
     );
     res.send({
@@ -108,7 +98,6 @@ module.exports = (app) => {
     const token = jwt.sign({
         id: user._id,
       },
-      //只能得到一个参数，获取配置
       app.get("secret")
     );
     res.send({

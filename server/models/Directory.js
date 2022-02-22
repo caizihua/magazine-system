@@ -13,4 +13,5 @@ const schema = new mongoose.Schema({
   magazine:  { type: mongoose.SchemaTypes.ObjectId, ref: "Magazine" },
   primary:[primary]
 })
-module.exports = mongoose.model("Directory", schema);
+const Directory = mongoose.model("Directory", schema);
+module.exports = Directory;
