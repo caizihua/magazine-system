@@ -1,9 +1,13 @@
+const Directory = require("../../models/Directory.js");
+
 //关于admin端的路由
 module.exports = (app) => {
   const express = require("express");
   const jwt = require("jsonwebtoken");
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
+  const Magazine = require("../../models/Magazine.js");
+  const Directory = require("../../models/Directory.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
     // mergeParams: true,
@@ -15,8 +19,20 @@ module.exports = (app) => {
   const resourceMiddleware = require("../../middleware/resource");
 
   router.post("/", async (req, res) => {
-    const model = await req.Model.create(req.body);
-    res.send(model);
+    let model = null;
+    if(req.Model === Magazine){
+      model = await req.Model.create(req.body);
+      const dir = await Directory.create({
+        magazine:model._id,
+        primary:[]
+      });
+      let magModel = Object.assign({directory:dir._id},req.body);
+      let newModel = await req.Model.findByIdAndUpdate(model._id,magModel);
+      res.send(newModel);
+    }else{
+      model = await req.Model.create(req.body);
+      res.send(model);
+    }
   });
   //1编辑
   router.put("/:id", async (req, res) => {

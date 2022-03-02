@@ -5,7 +5,7 @@
         <strong>新建杂志目录</strong>
       </template>
       <el-button type="primary">新增一级标题</el-button>
-      <el-table :data="directory">
+      <el-table :data="directory.primary">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table :data="props.row.secondary">
@@ -60,18 +60,22 @@
 import Dialog from "../components/dialog.vue";
 export default {
   components: { Dialog },
+  props: { id: {} },
   data() {
     return {
-      directory: [
-        {
-          name: "this is a primary",
-          secondary: [{ author: "jack", title: "this is a secondary" }]
-        },
-        {
-          name: "this is a primary2",
-          secondary: [{ author: "jack2", title: "this is a secondary2" }]
-        }
-      ],
+      directory: {
+        magazine: "",
+        primary: [
+          /* {
+            name: "this is a primary",
+            secondary: [{ author: "jack", title: "this is a secondary" }]
+          },
+          {
+            name: "this is a primary2",
+            secondary: [{ author: "jack2", title: "this is a secondary2" }]
+          } */
+        ]
+      },
       diaTitle: "",
       edit: false,
       currentDir: {
@@ -97,22 +101,25 @@ export default {
       this.currentDir.name = element.name;
       this.dialogVisible = true;
     },
-    send() {
+    async send() {
+      let index = this.currentDir.index;
       if (!this.edit) {
         console.log(this.currentDir);
       } else {
-        console.log(this.currentDir);
+        this.primary[index].name = this.currentDir.name;
+        await this.$http.put(`rest/directories`, this.directory);
+        this.$router.push("/magazines/list");
       }
       this.dialogVisible = false;
       this.edit = false;
     },
     async fetch() {
-      const res = await this.$http.get(`rest/magazines/${this.id}`);
-      this.model = res.data;
+      const res = await this.$http.get(`rest/directories/${this.id}`);
+      this.directory = res.data;
     }
   },
   created() {
-    fetch();
+    this.fetch();
   }
 };
 </script>

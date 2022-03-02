@@ -15,7 +15,19 @@
         <el-table-column prop="language" label="语种"> </el-table-column>
         <el-table-column prop="ISSN" label="ISSN"> </el-table-column>
         <el-table-column prop="CN" label="CN"> </el-table-column>
-        <el-table-column prop="initiateDate" label="创刊时间"> </el-table-column>
+        <el-table-column prop="initiateDate" label="创刊时间">
+        </el-table-column>
+        <el-table-column label="目录">
+          <template slot-scope="scope">
+            <!-- scope.row表示当前这一行的数据 -->
+            <el-button
+              type="primary"
+              size="small"
+              @click="$router.push(`/magazines/directory/${scope.row.directory}`)"
+              >编辑</el-button
+            >
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="190">
           <template slot-scope="scope">
             <!-- scope.row表示当前这一行的数据 -->
@@ -40,7 +52,7 @@
 export default {
   data() {
     return {
-      magazines: [],
+      magazines: []
     };
   },
   methods: {

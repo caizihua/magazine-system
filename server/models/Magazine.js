@@ -9,6 +9,7 @@ const schema = new mongoose.Schema({
   language: {type:String},
   ISSN: {type:String},
   CN:{type:String},
-  initiateDate:{type:Number}
+  initiateDate:{type:Number},
+  directory:{ type: String}
 });
 module.exports = mongoose.model("Magazine", schema);

@@ -64,7 +64,7 @@ const routes = [{
         props: true,
       },
       {
-        path: "/magazines/directory",
+        path: "/magazines/directory/:id",
         component: DirectoryEdit,
         props: true,
       },
