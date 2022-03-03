@@ -16,7 +16,6 @@
             <template slot="title">杂志</template>
             <!-- 设置index，当点击时跳转到相应的index中去 -->
             <el-menu-item index="/magazines/create">新建杂志</el-menu-item>
-            <el-menu-item index="/magazines/directory">新建杂志目录</el-menu-item>
             <el-menu-item index="/magazines/list">杂志列表</el-menu-item>
           </el-menu-item-group>
           <!-- <el-menu-item-group>
