@@ -1,36 +1,41 @@
 <template>
-  <div class="about">
-    <!-- 根据id显示，如果有就是编辑，如果没有就是新建 -->
-    <h1>{{ id ? "编辑" : "新建" }}管理员</h1>
-    <el-form label-width="80px">
-      <!-- @submit.native.prevent="save" -->
-      <el-form-item label="用户名">
-        <el-input v-model="model.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input type="password" v-model="model.password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="save">
-          <!-- native-type="submit" -->
-          提交</el-button
-        >
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-row class="about" type="flex" justify="center">
+    <el-col :span="8">
+      <el-card>
+        <template slot="header">
+          <h1>{{ id ? "编辑" : "新建" }}管理员</h1>
+        </template>
+        <el-form label-width="80px">
+          <!-- @submit.native.prevent="save" -->
+          <el-form-item label="用户名">
+            <el-input v-model="model.username"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input type="password" v-model="model.password"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="save">
+              <!-- native-type="submit" -->
+              提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 export default {
   //这样就能直接使用id，不用再写
   props: {
-    id: {},
+    id: {}
   },
   data() {
     return {
       model: {
-        name: "",
-      },
+        name: ""
+      }
     };
   },
   methods: {
@@ -55,18 +60,18 @@ export default {
       //提示保存成功
       this.$message({
         type: "success",
-        message: "保存成功",
+        message: "保存成功"
       });
     },
     //获取分类的详情
     async fetch() {
       const res = await this.$http.get(`rest/admin_users/${this.id}`);
       this.model = res.data;
-    },
+    }
   },
   created() {
     //前面的条件满足才执行后面的函数
     this.id && this.fetch();
-  },
+  }
 };
 </script>
