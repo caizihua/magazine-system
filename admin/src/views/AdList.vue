@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>广告位列表</h1>
+    <h1>轮播图列表</h1>
     <!--:data提供数据 -->
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="300"> </el-table-column>
@@ -28,7 +28,7 @@
 export default {
   data() {
     return {
-      items: [],
+      items: []
     };
   },
   methods: {
@@ -41,19 +41,19 @@ export default {
       this.$confirm(`是否确定删除："${row.name}"？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       }).then(async () => {
         await this.$http.delete(`rest/ads/${row._id}`);
         this.$message({
           type: "success",
-          message: "删除成功!",
+          message: "删除成功!"
         });
         this.fetch();
       });
-    },
+    }
   },
   created() {
     this.fetch();
-  },
+  }
 };
 </script>

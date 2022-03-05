@@ -25,9 +25,9 @@
           <el-menu-item index="/articles/list">文章列表</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <template slot="title">广告位</template>
-          <el-menu-item index="/ads/create">新建广告位</el-menu-item>
-          <el-menu-item index="/ads/list">广告位列表</el-menu-item>
+          <template slot="title">轮播图</template>
+          <el-menu-item index="/ads/create">新建轮播图</el-menu-item>
+          <el-menu-item index="/ads/list">轮播图列表</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
           <template slot="title">分类</template>
