@@ -6,7 +6,6 @@
           <h1>{{ id ? "编辑" : "新建" }}管理员</h1>
         </template>
         <el-form label-width="80px">
-          <!-- @submit.native.prevent="save" -->
           <el-form-item label="用户名">
             <el-input v-model="model.username"></el-input>
           </el-form-item>
@@ -15,7 +14,6 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="save">
-              <!-- native-type="submit" -->
               提交</el-button
             >
           </el-form-item>
@@ -27,7 +25,6 @@
 
 <script>
 export default {
-  //这样就能直接使用id，不用再写
   props: {
     id: {}
   },
@@ -40,9 +37,6 @@ export default {
   },
   methods: {
     async save() {
-      //对于新建和编辑，保存的方法不一样，一个是post，一个是put
-      //async await将类似同步的写法写成异步
-      // let res;
       if (this.id) {
         await this.$http.put(`rest/admin_users/${this.id}`, this.model);
         this.$router.push("/admin_users/list");

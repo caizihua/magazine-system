@@ -26,8 +26,8 @@
         </el-menu-item-group>
         <el-menu-item-group>
           <template slot="title">轮播图</template>
-          <el-menu-item index="/ads/create">新建轮播图</el-menu-item>
-          <el-menu-item index="/ads/list">轮播图列表</el-menu-item>
+          <el-menu-item index="/swiper/create">新建轮播图</el-menu-item>
+          <el-menu-item index="/swiper/list">轮播图列表</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
           <template slot="title">分类</template>

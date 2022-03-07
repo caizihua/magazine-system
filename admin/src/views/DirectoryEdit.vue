@@ -3,7 +3,7 @@
     <el-col :span="16">
       <el-card>
         <template slot="header">
-          <strong>新建杂志目录</strong>
+          <strong> {{id ? '编辑' : '新增'}}杂志目录</strong>
         </template>
         <el-button type="primary" @click="create()">新增一级标题</el-button>
         <div style="overflow:scroll;height:40rem;margin-top:1rem;">

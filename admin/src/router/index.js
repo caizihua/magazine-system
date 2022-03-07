@@ -13,112 +13,114 @@ import MagList from "../views/MagList.vue";
 import ArticleEdit from "../views/ArticleEdit.vue";
 import ArticleList from "../views/ArticleList.vue";
 
-import AdEdit from "../views/AdEdit.vue";
-import AdList from "../views/AdList.vue";
+import SwiperEdit from "../views/SwiperEdit.vue";
+import SwiperList from "../views/SwiperList.vue";
 
 import AdminUserEdit from "../views/AdminUserEdit.vue";
 import AdminUserList from "../views/AdminUserList.vue";
 Vue.use(VueRouter);
-const routes = [{
+const routes = [
+  {
     path: "/login",
     name: "login",
     component: Login,
     //meta称为路由元信息，可以被守卫查询到
     meta: {
       isPublic: true
-    },
-  }, {
+    }
+  },
+  {
     path: "/Register",
     name: "Register",
     component: Register,
     //meta称为路由元信息，可以被守卫查询到
     meta: {
       isPublic: true
-    },
+    }
   },
   {
     path: "/",
     component: Main,
-    children: [{
+    children: [
+      {
         path: "/categories/create",
-        component: CategoryEdit,
+        component: CategoryEdit
       },
       {
         //不同的地址使用相同的组件，传入id，props为true表示将数据传入组件中
         path: "/categories/edit/:id",
         component: CategoryEdit,
-        props: true,
+        props: true
       },
       {
         path: "/categories/list",
-        component: CategoryList,
+        component: CategoryList
       },
 
       {
         path: "/magazines/create",
-        component: MagEdit,
+        component: MagEdit
       },
       {
         path: "/magazines/edit/:id",
         component: MagEdit,
-        props: true,
+        props: true
       },
       {
         path: "/magazines/directory/:id",
         component: DirectoryEdit,
-        props: true,
+        props: true
       },
       {
         path: "/magazines/list",
-        component: MagList,
+        component: MagList
       },
       {
         path: "/articles/create",
-        component: ArticleEdit,
+        component: ArticleEdit
       },
       {
         path: "/articles/edit/:id",
         component: ArticleEdit,
-        props: true,
+        props: true
       },
       {
         path: "/articles/list",
-        component: ArticleList,
+        component: ArticleList
       },
 
       {
-        path: "/ads/create",
-        component: AdEdit,
+        path: "/swiper/create",
+        component: SwiperEdit
       },
       {
-        path: "/ads/edit/:id",
-        component: AdEdit,
-        props: true,
+        path: "/swiper/edit/:id",
+        component: SwiperEdit,
+        props: true
       },
       {
-        path: "/ads/list",
-        component: AdList,
+        path: "/swiper/list",
+        component: SwiperList
       },
-
       {
         path: "/admin_users/create",
-        component: AdminUserEdit,
+        component: AdminUserEdit
       },
       {
         path: "/admin_users/edit/:id",
         component: AdminUserEdit,
-        props: true,
+        props: true
       },
       {
         path: "/admin_users/list",
-        component: AdminUserList,
-      },
-    ],
-  },
+        component: AdminUserList
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
-  routes,
+  routes
 });
 //表示每次进入路由时做什么
 router.beforeEach((to, from, next) => {

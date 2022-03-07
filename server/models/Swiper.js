@@ -5,4 +5,4 @@ const schema = new mongoose.Schema({
   image: { type: String },
   url: { type: String }
 });
-module.exports = mongoose.model("Ad", schema);
+module.exports = mongoose.model("Swiper", schema);

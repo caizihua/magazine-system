@@ -17,8 +17,8 @@
                     :show-file-list="false"
                     :on-success="afterUpload"
                   >
-                    <img v-if="model.cover" :src="model.cover" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <img v-if="model.cover" :src="model.cover" class="mag" />
+                    <i v-else class="el-icon-plus mag-uploader-icon"></i>
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="名称">
@@ -117,12 +117,6 @@ export default {
       this.categories = res.data;
     },
     afterUpload(res) {
-      //1.后端传来的对象res，其中就包括了地址
-      //这里应注意，如果data的model里面没有定义icon，这样赋值将不会响应
-      //因为可能是响应式问题，没有定义icon这样在对icon赋值是没有意义的，也不会显示的
-      //可以显式地$set为对象添加不存在的属性。
-      // this.model.icon = res.url;
-      //2.使用$set时也应注意，如果对象已经添加了该属性，再这样添加也不会响应，应该是添加没有的属性
       this.$set(this.model, "cover", res.url);
     }
   },
