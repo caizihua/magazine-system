@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-  cover: { type: String },
   name: { type: String },
   categories:  [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
   host: {type:String},
@@ -10,6 +9,5 @@ const schema = new mongoose.Schema({
   ISSN: {type:String},
   CN:{type:String},
   initiateDate:{type:Number},
-  directory:{ type: String}
 });
 module.exports = mongoose.model("Magazine", schema);

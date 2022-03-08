@@ -1,72 +1,47 @@
 <template>
   <div>
     <el-row type="flex" justify="center">
-      <el-col :span="16" class="about">
+      <el-col :span="8" class="about">
         <el-card>
           <div slot="header" class="header">
-            <strong>{{ id ? "编辑" : "新建" }}杂志</strong>
+            <strong>{{ id ? "编辑" : "新建" }}杂志主信息</strong>
           </div>
-          <el-form style="margin-bottom: 50px" label-width="80px">
-            <el-row type="flex" align="bottom">
-              <el-col :span="12">
-                <el-form-item label="封面" style="margin-bottom: 0">
-                  <el-upload
-                    class="avatar-uploader"
-                    :action="uploadUrl"
-                    :headers="getAuthHeaders()"
-                    :show-file-list="false"
-                    :on-success="afterUpload"
-                  >
-                    <img v-if="model.cover" :src="model.cover" class="mag" />
-                    <i v-else class="el-icon-plus mag-uploader-icon"></i>
-                  </el-upload>
-                </el-form-item>
-                <el-form-item label="名称">
-                  <el-input v-model="model.name" style="width:100%"></el-input>
-                </el-form-item>
-                <el-form-item label="所属分类">
-                  <el-select
-                    v-model="model.categories"
-                    style="width:100%"
-                    multiple
-                  >
-                    <el-option
-                      v-for="item in categories"
-                      :key="item._id"
-                      :label="item.name"
-                      :value="item._id"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="主办">
-                  <el-input v-model="model.host" style="width:100%"></el-input>
-                </el-form-item>
-                <el-form-item label="出版周期">
-                  <el-input v-model="model.cycle" style="width:100%"></el-input>
-                </el-form-item>
-                <el-form-item label="语种">
-                  <el-input
-                    v-model="model.language"
-                    style="width:100%"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="ISSN">
-                  <el-input v-model="model.ISSN" style="width:100%"></el-input>
-                </el-form-item>
-                <el-form-item label="CN">
-                  <el-input v-model="model.CN" style="width:100%"></el-input>
-                </el-form-item>
-                <el-form-item label="创刊时间">
-                  <el-input
-                    v-model="model.initiateDate"
-                    style="width:100%"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item style="display:flex;justify-content: flex-end">
+          <el-form style="margin: 0 1rem 1rem" label-width="80px">
+            <el-form-item label="名称">
+              <el-input v-model="model.name" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="所属分类">
+              <el-select v-model="model.categories" style="width:100%" multiple>
+                <el-option
+                  v-for="item in categories"
+                  :key="item._id"
+                  :label="item.name"
+                  :value="item._id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="主办">
+              <el-input v-model="model.host" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="出版周期">
+              <el-input v-model="model.cycle" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="语种">
+              <el-input v-model="model.language" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="ISSN">
+              <el-input v-model="model.ISSN" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="CN">
+              <el-input v-model="model.CN" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="创刊时间">
+              <el-input
+                v-model="model.initiateDate"
+                style="width:100%"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
               <el-button type="primary" @click="save"> 提交</el-button>
             </el-form-item>
           </el-form>

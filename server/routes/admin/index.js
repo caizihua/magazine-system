@@ -1,12 +1,11 @@
-const Directory = require("../../models/Directory.js");
-
-//关于admin端的路由
 module.exports = (app) => {
   const express = require("express");
+  const multer = require("multer");
+  const fs = require("fs");
   const jwt = require("jsonwebtoken");
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
-  const Magazine = require("../../models/Magazine.js");
+  const Period = require("../../models/Period.js");
   const Directory = require("../../models/Directory.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
@@ -17,19 +16,22 @@ module.exports = (app) => {
   const authMiddleware = require("../../middleware/auth");
   //9资源转换中间件
   const resourceMiddleware = require("../../middleware/resource");
+  const uploadMiddleware = require("../../middleware/upload");
 
   router.post("/", async (req, res) => {
     let model = null;
-    if(req.Model === Magazine){
+    if (req.Model === Period) {
       model = await req.Model.create(req.body);
       const dir = await Directory.create({
-        magazine:model._id,
-        primary:[]
+        magazine: model._id,
+        primary: []
       });
-      let magModel = Object.assign({directory:dir._id},req.body);
-      let newModel = await req.Model.findByIdAndUpdate(model._id,magModel);
+      let PerModel = Object.assign({
+        directory: dir._id
+      }, req.body);
+      let newModel = await req.Model.findByIdAndUpdate(model._id, PerModel);
       res.send(newModel);
-    }else{
+    } else {
       model = await req.Model.create(req.body);
       res.send(model);
     }
@@ -70,19 +72,40 @@ module.exports = (app) => {
     resourceMiddleware(),
     router
   );
-  //7上传文件代码
-  const multer = require("multer");
-  const upload = multer({
-    dest: __dirname + "/../../uploads"
-  });
+  //7上传文件代码 
+  let fileName = null
+  let createFolder = function (folder) {
+    try {
+      fs.accessSync(folder)
+    } catch( e ) {
+      fs.mkdirSync(folder)
+    }
+  }
+  let uploadFolder = __dirname + "/../../uploads/" + fileName
+  createFolder(uploadFolder)
+  let storage = multer.diskStorage({
+    destination:function(req,file,cb){
+      cb(null , uploadFolder);
+    },
+    filename:function(req,file,cb){
+      cb(null , Date.now() + '-' +file.originalname)
+    }
+  })
+
+  let upload = multer({storage:storage})
+
   app.post(
-    "/admin/api/upload",
+    "/admin/api/upload/:name",
     authMiddleware(),
-    upload.single("file"),
+    uploadMiddleware(),
+    (req, res,next) => {
+      fileName = req.params.name; 
+      next();
+    },
+    upload.single("file"), 
     async (req, res) => {
-      const file = req.file;
-      file.url = `http://localhost:3000/uploads/${file.filename}`;
-      res.send(file);
+      fileName = req.params.name;
+      res.send('succ');
     }
   );
   //8token

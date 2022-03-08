@@ -9,10 +9,16 @@
         :default-active="$route.path"
       >
         <el-menu-item-group>
-          <template slot="title">杂志</template>
+          <template slot="title">杂志主信息</template>
           <!-- 设置index，当点击时跳转到相应的index中去 -->
-          <el-menu-item index="/magazines/create">新建杂志</el-menu-item>
+          <el-menu-item index="/magazines/create">新建杂志主信息</el-menu-item>
           <el-menu-item index="/magazines/list">杂志列表</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <template slot="title">杂志分期</template>
+          <!-- 设置index，当点击时跳转到相应的index中去 -->
+          <el-menu-item index="/periods/create">新建一期杂志</el-menu-item>
+          <el-menu-item index="/periods/list">分期列表</el-menu-item>
         </el-menu-item-group>
         <!-- <el-menu-item-group>
             <template slot="title">英雄</template>

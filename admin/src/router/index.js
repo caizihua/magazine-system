@@ -16,6 +16,9 @@ import ArticleList from "../views/ArticleList.vue";
 import SwiperEdit from "../views/SwiperEdit.vue";
 import SwiperList from "../views/SwiperList.vue";
 
+import PeriodEdit from "../views/PeriodEdit.vue";
+import PeriodList from "../views/PeriodList.vue";
+
 import AdminUserEdit from "../views/AdminUserEdit.vue";
 import AdminUserList from "../views/AdminUserList.vue";
 Vue.use(VueRouter);
@@ -33,7 +36,6 @@ const routes = [
     path: "/Register",
     name: "Register",
     component: Register,
-    //meta称为路由元信息，可以被守卫查询到
     meta: {
       isPublic: true
     }
@@ -47,7 +49,6 @@ const routes = [
         component: CategoryEdit
       },
       {
-        //不同的地址使用相同的组件，传入id，props为true表示将数据传入组件中
         path: "/categories/edit/:id",
         component: CategoryEdit,
         props: true
@@ -88,7 +89,6 @@ const routes = [
         path: "/articles/list",
         component: ArticleList
       },
-
       {
         path: "/swiper/create",
         component: SwiperEdit
@@ -101,6 +101,19 @@ const routes = [
       {
         path: "/swiper/list",
         component: SwiperList
+      },
+      {
+        path: "/periods/create",
+        component: PeriodEdit
+      },
+      {
+        path: "/periods/edit/:id",
+        component: PeriodEdit,
+        props: true
+      },
+      {
+        path: "/periods/list",
+        component: PeriodList
       },
       {
         path: "/admin_users/create",
@@ -122,7 +135,6 @@ const routes = [
 const router = new VueRouter({
   routes
 });
-//表示每次进入路由时做什么
 router.beforeEach((to, from, next) => {
   if (!to.meta.isPublic && !localStorage.token) {
     if (to.path == "/register") {

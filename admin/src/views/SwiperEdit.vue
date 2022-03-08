@@ -24,7 +24,7 @@
                 ref="upload"
                 :auto-upload="false"
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload'"
+                :action="$http.defaults.baseURL + '/upload' + `/${model.name}`"
                 :headers="getAuthHeaders()"
                 :show-file-list="false"
                 list-type="picture"
@@ -111,7 +111,6 @@ export default {
     picOnchange(file, fileList) {
       if (fileList.length !== 1) {
         fileList.splice(0, fileList.length - 1);
-        console.log(fileList);
       }
       this.image = file.url;
     },
