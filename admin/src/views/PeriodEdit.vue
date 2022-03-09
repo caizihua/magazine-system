@@ -11,36 +11,46 @@
             style="margin-top: 0.5rem;"
             :rules="{ required: true }"
           >
-            <el-col
-              style="display:flex;justify-content:flex-start;align-items:flex-end;"
-            >
+            <el-col style="display:flex;flex-direction: column;">
               <el-upload
                 ref="upload"
                 :auto-upload="false"
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload'"
+                :action="
+                  $http.defaults.baseURL + '/upload/period' + `/${model.name}`
+                "
                 :headers="getAuthHeaders()"
                 :show-file-list="false"
                 list-type="picture"
                 :on-change="picOnchange"
                 :on-success="res => $set(model, 'cover', res.url)"
               >
-                <img v-if="cover" :src="cover" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <img v-if="cover" :src="cover" class="mag" />
+                <i v-else class="el-icon-plus mag-uploader-icon"></i>
               </el-upload>
-              <div>
-                <el-button
-                  style="margin-left: 1rem;margin-bottom:1rem"
-                  size="small"
-                  type="success"
-                  @click="submitUpload"
-                  >上传</el-button
+              <div style="display:flex;align-items: flex-end;">
+                <div>
+                  <el-button size="small" type="success" @click="submitUpload"
+                    >上传</el-button
+                  >
+                </div>
+                <div
+                  style="width:12.5rem;height:1.5rem;color:orange;margin-bottom:0.5rem"
                 >
+                  <i class="el-icon-info" style="margin-left:1rem;"></i>
+                  <span> 请在提交前先上传图片! </span>
+                </div>
               </div>
             </el-col>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model="model.name" style="width:100%"></el-input>
+          </el-form-item>
+          <el-form-item label="第几期">
+            <el-input v-model="model.period" style="width:100%"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="save"> 保存</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -53,7 +63,7 @@ export default {
   data() {
     return {
       id: "",
-      cover:"",
+      cover: "",
       model: {
         cover: "",
         name: "",
@@ -63,6 +73,29 @@ export default {
     };
   },
   methods: {
+    async save() {
+      if (this.model.name === "") {
+        this.$message({ message: "请输入名称", type: "warning" });
+        return false;
+      } else if (this.model.cover === "" || this.model.cover === undefined) {
+        this.$message({ message: "请上传图片", type: "warning" });
+        return false;
+      } else {
+        if (this.id) {
+          this.$refs.upload.submit();
+          await this.$http.put(`rest/periods/${this.id}`, this.model);
+          this.$router.push("/periods/list");
+        } else {
+          this.$refs.upload.submit();
+          await this.$http.post("rest/periods", this.model);
+          this.$router.push("/periods/list");
+        }
+        this.$message({
+          type: "success",
+          message: "保存成功"
+        });
+      }
+    },
     async fetch() {
       const res = await this.$http.get(`rest/periods/${this.id}`);
       this.model = res.data;

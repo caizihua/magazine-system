@@ -1,6 +1,7 @@
 module.exports = () => async (req, res, next) => {
   const multer = require("multer");
   const fs = require("fs");
+  let  name = req.params.name,filename,uploadFolder,path;
 
   let createFolder = function (folder) {
     try {
@@ -9,19 +10,22 @@ module.exports = () => async (req, res, next) => {
       fs.mkdirSync(folder)
     }
   }
-  let uploadFolder = __dirname + "/../../uploads/" + req.params.name
+  path = (req.originalUrl === `/admin/api/upload/swiper/${name}`) ? 'swiper' : 'period'
+  uploadFolder = __dirname + `/../uploads/${path}/${name}`
   createFolder(uploadFolder)
-console.log( req.params.name)
+
   let storage = multer.diskStorage({
-    destination:function(req,file,cb){
+    destination:function(request,file,cb){
       cb(null , uploadFolder);
     },
-    filename:function(req,file,cb){
+    filename:function(request,file,cb){
       cb(null , Date.now() + '-' +file.originalname)
     }
   })
-
-  let upload = multer({storage:storage})
-  upload.single("file")
-  await next();
+  upload = multer({storage:storage}).single("file")
+  upload(req,res,async (err)=>{
+    filename = req.file.filename; 
+    req.file.url = `http://localhost:3000/uploads/${path}/${name}/${filename}`; 
+    await next();
+  })
 };

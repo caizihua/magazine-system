@@ -72,40 +72,21 @@ module.exports = (app) => {
     resourceMiddleware(),
     router
   );
-  //7上传文件代码 
-  let fileName = null
-  let createFolder = function (folder) {
-    try {
-      fs.accessSync(folder)
-    } catch( e ) {
-      fs.mkdirSync(folder)
-    }
-  }
-  let uploadFolder = __dirname + "/../../uploads/" + fileName
-  createFolder(uploadFolder)
-  let storage = multer.diskStorage({
-    destination:function(req,file,cb){
-      cb(null , uploadFolder);
-    },
-    filename:function(req,file,cb){
-      cb(null , Date.now() + '-' +file.originalname)
-    }
-  })
-
-  let upload = multer({storage:storage})
-
+  //7上传文件代码   
   app.post(
-    "/admin/api/upload/:name",
-    authMiddleware(),
+    "/admin/api/upload/swiper/:name", 
+    authMiddleware(), 
     uploadMiddleware(),
-    (req, res,next) => {
-      fileName = req.params.name; 
-      next();
-    },
-    upload.single("file"), 
-    async (req, res) => {
-      fileName = req.params.name;
-      res.send('succ');
+    (req,res)=>{
+      res.send(req.file)
+    }
+  );
+  app.post(
+    "/admin/api/upload/period/:name", 
+    authMiddleware(), 
+    uploadMiddleware(),
+    (req,res)=>{
+      res.send(req.file)
     }
   );
   //8token

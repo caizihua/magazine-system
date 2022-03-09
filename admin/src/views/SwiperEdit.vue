@@ -1,6 +1,6 @@
 <template>
   <el-row class="about" type="flex" justify="center">
-    <el-col :span="10">
+    <el-col :span="11">
       <el-card>
         <template slot="header">
           <h1>{{ id ? "编辑" : "新建" }}轮播图</h1>
@@ -17,14 +17,12 @@
             style="margin-top: 0.5rem;"
             :rules="{ required: true }"
           >
-            <el-col
-              style="display:flex;justify-content:flex-start;align-items:flex-end;"
-            >
+            <el-col style="display:flex;flex-direction: column;">
               <el-upload
                 ref="upload"
                 :auto-upload="false"
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload' + `/${model.name}`"
+                :action="$http.defaults.baseURL + '/upload/swiper' + `/${model.name}`"
                 :headers="getAuthHeaders()"
                 :show-file-list="false"
                 list-type="picture"
@@ -34,14 +32,16 @@
                 <img v-if="image" :src="image" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-              <div>
-                <el-button
-                  style="margin-left: 1rem;margin-bottom:1rem"
-                  size="small"
-                  type="success"
-                  @click="submitUpload"
-                  >上传</el-button
-                >
+              <div style="display:flex;align-items: flex-end;">
+                <div>
+                  <el-button size="small" type="success" @click="submitUpload"
+                    >上传</el-button
+                  >
+                </div>
+                <div style="width:12.5rem;height:1.5rem;color:orange;margin-bottom:0.5rem">
+                  <i class="el-icon-info" style="margin-left:1rem;"></i>
+                  <span> 请在提交前先上传图片! </span>
+                </div>
               </div>
             </el-col>
           </el-form-item>

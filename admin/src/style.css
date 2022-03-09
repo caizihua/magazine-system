@@ -29,14 +29,14 @@
 }
 
 .avatar {
-  min-width: 16rem;
-  height: 9rem;
+  min-width: 28rem;
+  height: 21rem;
   display: block;
 }
 
 .mag {
-  min-width: 9rem;
-  height: 9rem;
+  min-width: 12rem;
+  height: 20rem;
   display: block;
 }
 
