@@ -6,11 +6,23 @@
           <div slot="header" class="header">
             <strong>{{ id ? "编辑" : "新建" }}杂志主信息</strong>
           </div>
-          <el-form style="margin: 0 1rem 1rem" label-width="80px">
-            <el-form-item label="名称">
+          <el-form style="margin: 0 1rem 1rem" label-width="80px" ref="model">
+            <el-form-item
+              label="名称"
+              prop="name"
+              :rules="[
+                {
+                  required: true,
+                  message: '请输入名称'
+                }
+              ]"
+            >
               <el-input v-model="model.name" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="所属分类">
+            <el-form-item
+              label="所属分类"
+              :rules="{ required: true, message: '请选择所属分类' }"
+            >
               <el-select v-model="model.categories" style="width:100%" multiple>
                 <el-option
                   v-for="item in categories"
@@ -20,29 +32,53 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="主办">
+            <el-form-item
+              label="主办"
+              prop="host"
+              :rules="{ required: true, message: '请输入主办' }"
+            >
               <el-input v-model="model.host" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="出版周期">
+            <el-form-item
+              label="出版周期"
+              prop="cycle"
+              :rules="[{ required: true, message: '请输入出版周期' }]"
+            >
               <el-input v-model="model.cycle" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="语种">
+            <el-form-item
+              label="语种"
+              prop="language"
+              :rules="[{ required: true, message: '请输入语种' }]"
+            >
               <el-input v-model="model.language" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="ISSN">
+            <el-form-item
+              label="ISSN"
+              prop="ISSN"
+              :rules="[{ required: true, message: '请输入ISSN' }]"
+            >
               <el-input v-model="model.ISSN" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="CN">
+            <el-form-item
+              label="CN"
+              prop="CN"
+              :rules="[{ required: true, message: '请输入CN' }]"
+            >
               <el-input v-model="model.CN" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item label="创刊时间">
+            <el-form-item
+              label="创刊时间"
+              prop="initiateDate"
+              :rules="{ required: true }"
+            >
               <el-input
                 v-model="model.initiateDate"
                 style="width:100%"
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="save"> 提交</el-button>
+              <el-button type="primary" @click="save('model')"> 提交</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -59,28 +95,35 @@ export default {
   data() {
     return {
       model: {
-        name: ""
+        name: "",
+        host: "",
+        cycle: "",
+        language: "",
+        ISSN: "",
+        CN: "",
+        initiateDate: ""
       },
       categories: []
     };
   },
   methods: {
-    async save() {
-      if (this.id) {
-        await this.$http.put(`rest/magazines/${this.id}`, this.model);
-        this.$router.push("/magazines/list");
-      } else {
-        if (this.model.name == "") {
-          this.$message({ message: "请输入名称", type: "warning" });
-          return false;
+    save() {
+      this.$refs.model.validate(async valid => {
+        if (valid) {
+          if (this.id) {
+            await this.$http.put(`rest/magazines/${this.id}`, this.model);
+            this.$router.push("/magazines/list");
+          } else {
+            await this.$http.post("rest/magazines", this.model);
+            this.$router.push("/magazines/list");
+          }
+          this.$message({
+            type: "success",
+            message: "保存成功"
+          });
         } else {
-          await this.$http.post("rest/magazines", this.model);
-          this.$router.push("/magazines/list");
+          return false;
         }
-      }
-      this.$message({
-        type: "success",
-        message: "保存成功"
       });
     },
     async fetch() {

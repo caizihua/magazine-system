@@ -43,14 +43,21 @@
               </div>
             </el-col>
           </el-form-item>
-          <el-form-item label="名称">
-            <el-input v-model="model.name" style="width:100%"></el-input>
+          <el-form-item label="名称" :rules="{ required: true }">
+            <el-select v-model="model.name" style="width:100%">
+              <el-option
+                v-for="item in magazines"
+                :key="item._id"
+                :label="item.name"
+                :value="item._id"
+              ></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="第几期">
+          <el-form-item label="期数" :rules="{ required: true }">
             <el-input v-model="model.period" style="width:100%"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="save"> 保存</el-button>
+            <el-button type="primary" @click="save">提交</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -60,9 +67,11 @@
 
 <script>
 export default {
+  props: {
+    id: {}
+  },
   data() {
     return {
-      id: "",
       cover: "",
       model: {
         cover: "",
@@ -73,6 +82,7 @@ export default {
     };
   },
   methods: {
+    //提交按钮
     async save() {
       if (this.model.name === "") {
         this.$message({ message: "请输入名称", type: "warning" });
@@ -99,25 +109,30 @@ export default {
     async fetch() {
       const res = await this.$http.get(`rest/periods/${this.id}`);
       this.model = res.data;
+      this.cover = this.model.cover;
     },
     async fetchMag() {
       const res = await this.$http.get(`rest/magazine`);
       this.magazines = res.data;
-      console.log(res);
     },
+    //上传图片按钮
     submitUpload() {
+      if (this.model.name === "") {
+        this.$message({ message: "请输入名称", type: "warning" });
+        return false;
+      } else if (this.cover === "") {
+        this.$message({ message: "请选择图片", type: "warning" });
+        return false;
+      }
       this.$refs.upload.submit();
       this.$message({ message: "上传成功", type: "success" });
     },
+    //选择图片事件
     picOnchange(file, fileList) {
       if (fileList.length !== 1) {
         fileList.splice(0, fileList.length - 1);
-        console.log(fileList);
       }
       this.cover = file.url;
-    },
-    uploadSuccess(res) {
-      this.$set(this.model, "cover", res.file);
     }
   },
   created() {

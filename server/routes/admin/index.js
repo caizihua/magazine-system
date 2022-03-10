@@ -1,12 +1,10 @@
 module.exports = (app) => {
   const express = require("express");
-  const multer = require("multer");
-  const fs = require("fs");
   const jwt = require("jsonwebtoken");
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
-  const Period = require("../../models/Period.js");
   const Directory = require("../../models/Directory.js");
+  const Period = require("../../models/Period.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
     // mergeParams: true,
@@ -22,14 +20,14 @@ module.exports = (app) => {
     let model = null;
     if (req.Model === Period) {
       model = await req.Model.create(req.body);
-      const dir = await Directory.create({
+      const dir = await Period.create({
         magazine: model._id,
         primary: []
       });
-      let PerModel = Object.assign({
+      let DirModel = Object.assign({
         directory: dir._id
       }, req.body);
-      let newModel = await req.Model.findByIdAndUpdate(model._id, PerModel);
+      let newModel = await req.Model.findByIdAndUpdate(model._id, DirModel);
       res.send(newModel);
     } else {
       model = await req.Model.create(req.body);
