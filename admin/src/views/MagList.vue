@@ -47,7 +47,7 @@ export default {
   methods: {
     async fetch() {
       //使用get方法获取服务端的接口
-      const res = await this.$http.get("rest/magazines");
+      const res = await this.$http.get("rest/main");
       this.magazines = res.data;
     },
     async fetchCategories() {},
@@ -57,7 +57,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        await this.$http.delete(`rest/magazines/${row._id}`);
+        await this.$http.delete(`rest/main/${row._id}`);
         this.$message({
           type: "success",
           message: "删除成功!"

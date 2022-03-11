@@ -6,7 +6,12 @@
           <div slot="header" class="header">
             <strong>{{ id ? "编辑" : "新建" }}杂志主信息</strong>
           </div>
-          <el-form style="margin: 0 1rem 1rem" label-width="80px" ref="model">
+          <el-form
+            style="margin: 0 1rem 1rem"
+            label-width="80px"
+            :model="model"
+            ref="model"
+          >
             <el-form-item
               label="名称"
               prop="name"
@@ -70,7 +75,7 @@
             <el-form-item
               label="创刊时间"
               prop="initiateDate"
-              :rules="{ required: true }"
+              :rules="{ required: true, message: '请输入创刊时间' }"
             >
               <el-input
                 v-model="model.initiateDate"
@@ -111,10 +116,10 @@ export default {
       this.$refs.model.validate(async valid => {
         if (valid) {
           if (this.id) {
-            await this.$http.put(`rest/magazines/${this.id}`, this.model);
+            await this.$http.put(`rest/main/${this.id}`, this.model);
             this.$router.push("/magazines/list");
           } else {
-            await this.$http.post("rest/magazines", this.model);
+            await this.$http.post("rest/main", this.model);
             this.$router.push("/magazines/list");
           }
           this.$message({
@@ -127,8 +132,9 @@ export default {
       });
     },
     async fetch() {
-      const res = await this.$http.get(`rest/magazines/${this.id}`);
+      const res = await this.$http.get(`rest/main/${this.id}`);
       this.model = res.data;
+      console.log(this.model);
     },
     async fetchCategories() {
       const res = await this.$http.get(`rest/categories`);

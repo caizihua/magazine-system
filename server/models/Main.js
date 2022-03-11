@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   name: { type: String },
-  categories:  [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
+  categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
   host: {type:String},
   cycle: {type:String},
   language: {type:String},
@@ -10,4 +10,4 @@ const schema = new mongoose.Schema({
   CN:{type:String},
   initiateDate:{type:Number},
 });
-module.exports = mongoose.model("Magazine", schema);
+module.exports = mongoose.model("Main", schema);

@@ -5,11 +5,17 @@
         <template slot="header">
           <strong> {{ `${this.id ? "编辑" : "新增"}一期杂志` }} </strong>
         </template>
-        <el-form style="margin: 0 1rem 1rem" label-width="80px">
+        <el-form style="margin: 0 1rem 1rem" label-width="80px" ref="model">
           <el-form-item
             label="图片"
             style="margin-top: 0.5rem;"
-            :rules="{ required: true }"
+            :rules="[
+              {
+                required: true,
+                message: '请上传'
+              }
+            ]"
+            prop="number.cover"
           >
             <el-col style="display:flex;flex-direction: column;">
               <el-upload
@@ -23,7 +29,7 @@
                 :show-file-list="false"
                 list-type="picture"
                 :on-change="picOnchange"
-                :on-success="res => $set(model, 'cover', res.url)"
+                :on-success="res => $set(content, 'cover', res.url)"
               >
                 <img v-if="cover" :src="cover" class="mag" />
                 <i v-else class="el-icon-plus mag-uploader-icon"></i>
@@ -43,7 +49,16 @@
               </div>
             </el-col>
           </el-form-item>
-          <el-form-item label="名称" :rules="{ required: true }">
+          <el-form-item
+            label="名称"
+            :rules="[
+              {
+                required: true,
+                message: '请输入名称'
+              }
+            ]"
+            prop="model.name"
+          >
             <el-select v-model="model.name" style="width:100%">
               <el-option
                 v-for="item in magazines"
@@ -53,8 +68,32 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="期数" :rules="{ required: true }">
-            <el-input v-model="model.period" style="width:100%"></el-input>
+          <el-form-item
+            label="年"
+            :rules="[
+              {
+                required: true,
+                message: '请输入年份'
+              }
+            ]"
+            prop="year"
+          >
+            <el-input v-model="model.period.year" style="width:100%"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="期数"
+            :rules="[
+              {
+                required: true,
+                message: '请输入期数'
+              }
+            ]"
+            prop="number.period"
+          >
+            <el-input
+              v-model="content.number"
+              style="width:100%"
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="save">提交</el-button>
@@ -74,37 +113,43 @@ export default {
     return {
       cover: "",
       model: {
-        cover: "",
         name: "",
-        period: ""
+        period: {
+          year: null,//年份
+          content: [""]//年份中每期id
+        }
+      },
+      content: {
+        parent: "",//Period的objectID
+        number: "",//期数
+        cover: ""//封面
       },
       magazines: []
     };
   },
   methods: {
     //提交按钮
-    async save() {
-      if (this.model.name === "") {
-        this.$message({ message: "请输入名称", type: "warning" });
-        return false;
-      } else if (this.model.cover === "" || this.model.cover === undefined) {
-        this.$message({ message: "请上传图片", type: "warning" });
-        return false;
-      } else {
-        if (this.id) {
-          this.$refs.upload.submit();
-          await this.$http.put(`rest/periods/${this.id}`, this.model);
-          this.$router.push("/periods/list");
+    save() {
+      this.$refs.model.validate(async valid => {
+        if (valid) {
+          if (this.id) {
+            this.$refs.upload.submit();
+            await this.$http.put(`rest/periods/${this.id}`, this.model);
+            this.$router.push("/periods/list");
+          } else {
+            this.$refs.upload.submit();
+            await this.$http.post("rest/contents", this.model);
+            await this.$http.post("rest/contents", this.model);
+            this.$router.push("/periods/list");
+          }
+          this.$message({
+            type: "success",
+            message: "保存成功"
+          });
         } else {
-          this.$refs.upload.submit();
-          await this.$http.post("rest/periods", this.model);
-          this.$router.push("/periods/list");
+          return false;
         }
-        this.$message({
-          type: "success",
-          message: "保存成功"
-        });
-      }
+      });
     },
     async fetch() {
       const res = await this.$http.get(`rest/periods/${this.id}`);
@@ -112,7 +157,7 @@ export default {
       this.cover = this.model.cover;
     },
     async fetchMag() {
-      const res = await this.$http.get(`rest/magazine`);
+      const res = await this.$http.get(`rest/main`);
       this.magazines = res.data;
     },
     //上传图片按钮

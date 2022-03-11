@@ -4,7 +4,6 @@ module.exports = (app) => {
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
   const Directory = require("../../models/Directory.js");
-  const Period = require("../../models/Period.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
     // mergeParams: true,
@@ -18,14 +17,14 @@ module.exports = (app) => {
 
   router.post("/", async (req, res) => {
     let model = null;
-    if (req.Model === Period) {
+    if (req.Model === Directory) {
       model = await req.Model.create(req.body);
-      const dir = await Period.create({
-        magazine: model._id,
+      const dir = await Directory.create({
+        period: model._id,
         primary: []
       });
       let DirModel = Object.assign({
-        directory: dir._id
+        period: dir._id
       }, req.body);
       let newModel = await req.Model.findByIdAndUpdate(model._id, DirModel);
       res.send(newModel);
@@ -33,6 +32,8 @@ module.exports = (app) => {
       model = await req.Model.create(req.body);
       res.send(model);
     }
+    model = await req.Model.create(req.body);
+    res.send(model);
   });
   //1编辑
   router.put("/:id", async (req, res) => {

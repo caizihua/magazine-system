@@ -1,9 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); 
+
+const period = new mongoose.Schema({
+  year:{ type: Number},
+  content:[{ type: mongoose.SchemaTypes.ObjectId, ref: "Content" }]
+})
 
 const schema = new mongoose.Schema({
-  cover: { type: String },
-  name:{ type: mongoose.SchemaTypes.ObjectId, ref: "Magazine" },
-  period:{type: String},
-  directory:{ type: String}
+  name:{ type: mongoose.SchemaTypes.ObjectId, ref: "Main" },
+  period:[period],
 });
 module.exports = mongoose.model("Period", schema);
