@@ -5,7 +5,12 @@
         <template slot="header">
           <strong> {{ `${this.id ? "编辑" : "新增"}一期杂志` }} </strong>
         </template>
-        <el-form style="margin: 0 1rem 1rem" label-width="80px" ref="model">
+        <el-form
+          style="margin: 0 1rem 1rem"
+          label-width="80px"
+          :model="model"
+          ref="model"
+        >
           <el-form-item
             label="图片"
             style="margin-top: 0.5rem;"
@@ -57,7 +62,7 @@
                 message: '请输入名称'
               }
             ]"
-            prop="model.name"
+            prop="name"
           >
             <el-select v-model="model.name" style="width:100%">
               <el-option
@@ -76,7 +81,7 @@
                 message: '请输入年份'
               }
             ]"
-            prop="year"
+            prop="period.year"
           >
             <el-input v-model="model.period.year" style="width:100%"></el-input>
           </el-form-item>
@@ -88,12 +93,9 @@
                 message: '请输入期数'
               }
             ]"
-            prop="number.period"
+            prop="content.number"
           >
-            <el-input
-              v-model="content.number"
-              style="width:100%"
-            ></el-input>
+            <el-input v-model="content.number" style="width:100%"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="save">提交</el-button>
@@ -115,14 +117,14 @@ export default {
       model: {
         name: "",
         period: {
-          year: null,//年份
-          content: [""]//年份中每期id
+          year: null, //年份
+          content: [""] //年份中每期id
         }
       },
       content: {
-        parent: "",//Period的objectID
-        number: "",//期数
-        cover: ""//封面
+        parent: "", //Period的objectID
+        number: "", //期数
+        cover: "" //封面
       },
       magazines: []
     };
@@ -131,15 +133,17 @@ export default {
     //提交按钮
     save() {
       this.$refs.model.validate(async valid => {
+        let postModel = null;
         if (valid) {
           if (this.id) {
             this.$refs.upload.submit();
             await this.$http.put(`rest/periods/${this.id}`, this.model);
             this.$router.push("/periods/list");
           } else {
+            postModel.name = this.model.name;
+            postModel.period
             this.$refs.upload.submit();
-            await this.$http.post("rest/contents", this.model);
-            await this.$http.post("rest/contents", this.model);
+            await this.$http.put(`rest/periods`);
             this.$router.push("/periods/list");
           }
           this.$message({
@@ -181,8 +185,8 @@ export default {
     }
   },
   created() {
-    this.id && this.fetch();
-    this.fetchMag();
+    // this.id && this.fetch();
+     this.fetchMag();
   }
 };
 </script>

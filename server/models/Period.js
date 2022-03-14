@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const period = new mongoose.Schema({
   year:{ type: Number},
-  content:[{ type: mongoose.SchemaTypes.ObjectId, ref: "Content" }]
+  content:[{
+    number:{ type: String},
+    cover: { type: String},
+    directory:{ type: mongoose.SchemaTypes.ObjectId, ref: "Directory"}
+  }]
 })
 
 const schema = new mongoose.Schema({

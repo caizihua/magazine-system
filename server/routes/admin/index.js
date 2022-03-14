@@ -32,8 +32,6 @@ module.exports = (app) => {
       model = await req.Model.create(req.body);
       res.send(model);
     }
-    model = await req.Model.create(req.body);
-    res.send(model);
   });
   //1编辑
   router.put("/:id", async (req, res) => {
