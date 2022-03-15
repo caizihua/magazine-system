@@ -20,7 +20,7 @@
                 message: '请上传'
               }
             ]"
-            prop="number.cover"
+            prop="cover"
           >
             <el-col style="display:flex;flex-direction: column;">
               <el-upload
@@ -34,7 +34,7 @@
                 :show-file-list="false"
                 list-type="picture"
                 :on-change="picOnchange"
-                :on-success="res => $set(content, 'cover', res.url)"
+                :on-success="res => $set(model, 'cover', res.url)"
               >
                 <img v-if="cover" :src="cover" class="mag" />
                 <i v-else class="el-icon-plus mag-uploader-icon"></i>
@@ -81,9 +81,9 @@
                 message: '请输入年份'
               }
             ]"
-            prop="period.year"
+            prop="year"
           >
-            <el-input v-model="model.period.year" style="width:100%"></el-input>
+            <el-input v-model="model.year" style="width:100%"></el-input>
           </el-form-item>
           <el-form-item
             label="期数"
@@ -93,9 +93,21 @@
                 message: '请输入期数'
               }
             ]"
-            prop="content.number"
+            prop="number"
           >
-            <el-input v-model="content.number" style="width:100%"></el-input>
+            <el-input v-model="model.number" style="width:100%"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="价格"
+            :rules="[
+              {
+                required: true,
+                message: '请输入价格'
+              }
+            ]"
+            prop="price"
+          >
+            <el-input v-model="model.price" style="width:100%"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="save">提交</el-button>
@@ -116,15 +128,9 @@ export default {
       cover: "",
       model: {
         name: "",
-        period: {
-          year: null, //年份
-          content: [""] //年份中每期id
-        }
-      },
-      content: {
-        parent: "", //Period的objectID
+        year: null, //年份
         number: "", //期数
-        cover: "" //封面
+        price: null
       },
       magazines: []
     };
@@ -133,17 +139,14 @@ export default {
     //提交按钮
     save() {
       this.$refs.model.validate(async valid => {
-        let postModel = null;
         if (valid) {
           if (this.id) {
             this.$refs.upload.submit();
             await this.$http.put(`rest/periods/${this.id}`, this.model);
             this.$router.push("/periods/list");
           } else {
-            postModel.name = this.model.name;
-            postModel.period
             this.$refs.upload.submit();
-            await this.$http.put(`rest/periods`);
+            await this.$http.post(`rest/periods`, this.model);
             this.$router.push("/periods/list");
           }
           this.$message({
@@ -186,7 +189,7 @@ export default {
   },
   created() {
     // this.id && this.fetch();
-     this.fetchMag();
+    this.fetchMag();
   }
 };
 </script>
