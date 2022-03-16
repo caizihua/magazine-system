@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-row type="flex" justify="center">
-      <el-col :span="12">
+      <el-col :span="16">
         <el-card>
           <template slot="header">
             <strong>分类列表</strong>
           </template>
           <el-table :data="items" :height="wrapHight - 150" stripe>
+            <el-table-column prop="_id" label="ID"> </el-table-column>
             <el-table-column
               prop="parent.name"
               label="上级分类"
@@ -61,10 +62,15 @@ export default {
         });
         this.fetch();
       });
+    },
+    async init() {
+      const res = await this.$http.get(`init/categories`);
+      console.log(res.data);
     }
   },
   created() {
     this.fetch();
+    // this.init();
   }
 };
 </script>

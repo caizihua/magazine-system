@@ -59,6 +59,7 @@ export default {
             await that.$http.put(`rest/categories/${that.id}`, that.model);
             that.$router.push("/categories/list");
           } else {
+            console.log(that.model);
             await that.$http.post("rest/categories", that.model);
             that.$router.push("/categories/list");
           }
@@ -75,7 +76,8 @@ export default {
     async fetchParents() {
       const res = await this.$http.get(`rest/categories`);
       this.parents = res.data;
-    }
+    },
+
   },
   created() {
     this.id && this.fetch();

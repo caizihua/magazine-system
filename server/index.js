@@ -24,8 +24,8 @@ app.use("/", express.static(__dirname + "/web"));
 
 require("./routes/admin")(app);
 require("./plugins/db")(app);
-require("./routes/web")(app);
+require("./routes/web/index")(app);
 
 app.listen(3000, () => {
-  console.log("http://localhost:3000");
+  console.log("http://localhost:3000 is already");
 });

@@ -4,12 +4,12 @@ module.exports = (app) => {
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
   const Directory = require("../../models/Directory.js");
-  const Period = require("../../models/Period.js");
+  const Category = require("../../models/Category.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
     // mergeParams: true,
   });
-
+  const routerInit = express.Router({});
   //5登录授权中间件
   const authMiddleware = require("../../middleware/auth");
   //9资源转换中间件
@@ -18,7 +18,7 @@ module.exports = (app) => {
 
   router.post("/", async (req, res) => {
     let model = null;
-    if (req.Model === Period) {
+    if (req.Model.modelName === "Period") {
       model = await req.Model.create(req.body);
       const dir = await Directory.create({
         period: model._id,
@@ -56,10 +56,9 @@ module.exports = (app) => {
     // .sort({ _id: -1 })按时间倒序查询
     res.send(items);
   });
-
-  router.post('/search',async (req,res)=>{ 
-    const items = await req.Model.find({year:2000})
-    console.log(items)
+  //分期列表搜索功能
+  router.post('/search', async (req, res) => {
+    const items = await req.Model.find(req.body)
     res.send(items)
   })
 
@@ -76,20 +75,34 @@ module.exports = (app) => {
     resourceMiddleware(),
     router
   );
+  //初始化资源
+  routerInit.get("/categories", async (req, res) => {
+    const categories = require("./data/categories")
+    await Category.deleteMany({});
+    await Category.insertMany(categories[0]);
+    res.send(categories)
+  })
+
+  app.use(
+    "/admin/api/init",
+    authMiddleware(),
+    routerInit
+  );
+
   //7上传文件代码   
   app.post(
-    "/admin/api/upload/swiper/:name", 
-    authMiddleware(), 
+    "/admin/api/upload/swiper/:name",
+    authMiddleware(),
     uploadMiddleware(),
-    (req,res)=>{
+    (req, res) => {
       res.send(req.file)
     }
   );
   app.post(
-    "/admin/api/upload/period/:name", 
-    authMiddleware(), 
+    "/admin/api/upload/period/:name",
+    authMiddleware(),
     uploadMiddleware(),
-    (req,res)=>{
+    (req, res) => {
       res.send(req.file)
     }
   );
@@ -108,8 +121,8 @@ module.exports = (app) => {
     const isValid = require("bcrypt").compareSync(password, user.password);
     assert(isValid, 422, "密码错误");
     const token = jwt.sign({
-        id: user._id,
-      },
+      id: user._id,
+    },
       app.get("secret")
     );
     res.send({
@@ -120,8 +133,8 @@ module.exports = (app) => {
   app.post("/admin/api/register", async (req, res) => {
     const user = await AdminUser.create(req.body);
     const token = jwt.sign({
-        id: user._id,
-      },
+      id: user._id,
+    },
       app.get("secret")
     );
     res.send({
