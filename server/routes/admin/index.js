@@ -78,9 +78,18 @@ module.exports = (app) => {
   //初始化资源
   routerInit.get("/categories", async (req, res) => {
     const categories = require("./data/categories")
-    await Category.deleteMany({});
-    await Category.insertMany(categories[0]);
-    res.send(categories)
+    // await Category.deleteMany({});
+    // await Category.insertMany(categories.parent);
+    let data;
+    data = await Category.find()
+    categories.child.map((e, i) => {
+      e.map((v) => {
+        v.parent = data[i]._id
+      })
+      Category.insertMany(e);
+    })
+    data = await Category.find()
+    res.send(data)
   })
 
   app.use(
