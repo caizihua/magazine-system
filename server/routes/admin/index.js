@@ -61,13 +61,11 @@ module.exports = (app) => {
     const items = await req.Model.find(req.body)
     res.send(items)
   })
-
   //4分类详情
   router.get("/:id", async (req, res) => {
     const model = await req.Model.findById(req.params.id);
     res.send(model);
   });
-
   //6资源列表
   app.use(
     "/admin/api/rest/:resource",
@@ -91,13 +89,11 @@ module.exports = (app) => {
     data = await Category.find()
     res.send(data)
   })
-
   app.use(
     "/admin/api/init",
     authMiddleware(),
     routerInit
   );
-
   //7上传文件代码   
   app.post(
     "/admin/api/upload/swiper/:name",

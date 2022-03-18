@@ -6,6 +6,12 @@
           <template slot="header">
             <h1>管理员列表</h1>
           </template>
+          <el-button
+            type="primary"
+            size="small"
+            @click="$router.push(`/admin_users/create`)"
+            >新增</el-button
+          >
           <el-table :data="items">
             <el-table-column prop="_id" label="ID" width="250">
             </el-table-column>
@@ -13,12 +19,6 @@
             </el-table-column>
             <el-table-column label="操作" width="210">
               <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="$router.push(`/admin_users/create`)"
-                  >新增</el-button
-                >
                 <el-button
                   type="primary"
                   size="small"

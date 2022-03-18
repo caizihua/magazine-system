@@ -5,17 +5,23 @@
         <template slot="header">
           <h1>{{ id ? "编辑" : "新建" }}管理员</h1>
         </template>
-        <el-form label-width="80px">
-          <el-form-item label="用户名">
+        <el-form label-width="80px" ref="model" :model="model">
+          <el-form-item
+            label="用户名"
+            :rules="[{ required: true, message: '请输入用户名' }]"
+            prop="username"
+          >
             <el-input v-model="model.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item
+            label="密码"
+            :rules="[{ required: true, message: '请输入密码' }]"
+            prop="password"
+          >
             <el-input type="password" v-model="model.password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="save">
-              提交</el-button
-            >
+            <el-button type="primary" @click="save('model')"> 提交</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -36,25 +42,23 @@ export default {
     };
   },
   methods: {
-    async save() {
-      if (this.id) {
-        await this.$http.put(`rest/admin_users/${this.id}`, this.model);
-        this.$router.push("/admin_users/list");
-      } else {
-        if (this.model.username == "") {
-          this.$message({ message: "请输入名称", type: "warning" });
-          return false;
+    save(model) {
+      this.$refs[model].validate(async valid => {
+        if (valid) {
+          if (this.id) {
+            await this.$http.put(`rest/admin_users/${this.id}`, this.model);
+            this.$router.push("/admin_users/list");
+          } else {
+            await this.$http.post("rest/admin_users", this.model);
+            this.$router.push("/admin_users/list");
+          }
+          this.$message({
+            type: "success",
+            message: "保存成功"
+          });
         } else {
-          await this.$http.post("rest/admin_users", this.model);
-          this.$router.push("/admin_users/list");
+          return false;
         }
-      }
-      //跳转到分类页面
-
-      //提示保存成功
-      this.$message({
-        type: "success",
-        message: "保存成功"
       });
     },
     //获取分类的详情

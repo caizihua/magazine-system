@@ -19,14 +19,16 @@
                   type="primary"
                   size="small"
                   @click="$router.push(`/categories/edit/${scope.row._id}`)"
-                  >编辑</el-button
                 >
+                  编辑
+                </el-button>
                 <el-button
                   type="primary"
                   size="small"
                   @click="remove(scope.row)"
-                  >删除</el-button
                 >
+                  删除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,7 +72,7 @@ export default {
   },
   created() {
     this.fetch();
-    // this.init();
+    //this.init();
   }
 };
 </script>
