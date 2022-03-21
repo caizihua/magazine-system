@@ -4,6 +4,7 @@ module.exports = (app) => {
   var assert = require("http-assert");
   const AdminUser = require("../../models/AdminUser.js");
   const Directory = require("../../models/Directory.js");
+  const Main = require("../../models/Main.js");
   const Category = require("../../models/Category.js");
   const router = express.Router({
     //这个参数表示将动态resource能传递给router，这样router里面的路由就能使用这些参数
@@ -74,24 +75,53 @@ module.exports = (app) => {
     router
   );
   //初始化资源
-  routerInit.get("/categories", async (req, res) => {
-    const categories = require("./data/categories")
-    // await Category.deleteMany({});
-    // await Category.insertMany(categories.parent);
-    let data;
-    data = await Category.find()
-    categories.child.map((e, i) => {
-      e.map((v) => {
-        v.parent = data[i]._id
+  routerInit.get("/", async (req, res) => {
+    /*if (req.Model.modelName === "Category") {
+      const categories = require("./data/Category")
+      await Category.deleteMany({});
+      await Category.insertMany(categories.parent);
+      let data;
+      data = await Category.find()
+      categories.child.map((e, i) => {
+        e.map((v) => {
+          v.parent = data[i]._id
+        })
+        Category.insertMany(e);
       })
-      Category.insertMany(e);
-    })
-    data = await Category.find()
-    res.send(data)
+      data = await Category.find()
+      res.send(data)
+    } else if (req.Model.modelName === "Main") {
+      const main = require("./data/Main")
+      await Main.deleteMany({});
+      await Main.insertMany(main);
+      let data = await Main.find()
+      res.send(data)
+    }*/
+    let name = req.Model.modelName;
+    const data = require(`./data/${name}`);
+    await req.Model.deleteMany({});
+    if (name === "Category") {
+      await req.Model.insertMany(data.parent);
+    } else {
+      await req.Model.insertMany(data);
+    }
+    let getData;
+    getData = await Category.find()
+    if (name === "Category") {
+      getData.child.map((e, i) => {
+        e.map((v) => {
+          v.parent = data[i]._id
+        })
+        req.Model.insertMany(e);
+      })
+      getData = await req.Model.find()
+    }
+    res.send(getData)
   })
   app.use(
-    "/admin/api/init",
+    "/admin/api/init/:resource",
     authMiddleware(),
+    resourceMiddleware(),
     routerInit
   );
   //7上传文件代码   

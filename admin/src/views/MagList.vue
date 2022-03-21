@@ -64,10 +64,15 @@ export default {
         });
         this.fetch();
       });
+    },
+    async init() {
+      const res = await this.$http.get(`init/main`);
+      console.log(res.data);
     }
   },
   created() {
     this.fetch();
+    this.init();
   }
 };
 </script>

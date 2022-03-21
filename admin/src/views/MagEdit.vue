@@ -56,20 +56,29 @@
               prop="language"
               :rules="[{ required: true, message: '请输入语种' }]"
             >
-              <el-input v-model="model.language" style="width:100%"></el-input>
+              <template>
+                <el-select
+                  v-model="model.language"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  placeholder="请选择文章标签"
+                >
+                  <el-option
+                    v-for="item in languages"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </template>
             </el-form-item>
-            <el-form-item
-              label="ISSN"
-              prop="ISSN"
-              :rules="[{ required: true, message: '请输入ISSN' }]"
-            >
+            <el-form-item label="ISSN">
               <el-input v-model="model.ISSN" style="width:100%"></el-input>
             </el-form-item>
-            <el-form-item
-              label="CN"
-              prop="CN"
-              :rules="[{ required: true, message: '请输入CN' }]"
-            >
+            <el-form-item label="CN">
               <el-input v-model="model.CN" style="width:100%"></el-input>
             </el-form-item>
             <el-form-item
@@ -103,11 +112,17 @@ export default {
         name: "",
         host: "",
         cycle: "",
-        language: "",
+        language: [],
         ISSN: "",
         CN: "",
         initiateDate: ""
       },
+      languages: [
+        { value: "中文", label: "中文" },
+        { value: "英文", label: "英文" },
+        { value: "法文", label: "法文" },
+        { value: "德文", label: "德文" }
+      ],
       categories: []
     };
   },

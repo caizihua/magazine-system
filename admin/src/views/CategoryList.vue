@@ -72,7 +72,7 @@ export default {
   },
   created() {
     this.fetch();
-    //this.init();
+   this.init();
   }
 };
 </script>
