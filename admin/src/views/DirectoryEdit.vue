@@ -3,7 +3,7 @@
     <el-col :span="16">
       <el-card>
         <template slot="header">
-          <strong> {{id ? '编辑' : '新增'}}杂志目录</strong>
+          <strong> {{ id ? "编辑" : "新增" }}杂志目录</strong>
         </template>
         <el-button type="primary" @click="create()">新增一级标题</el-button>
         <div style="overflow:scroll;height:40rem;margin-top:1rem;">
@@ -17,6 +17,7 @@
               <el-col :span="10">
                 <strong> {{ item.name }} </strong>
               </el-col>
+              <!--一级标题-->
               <el-col
                 :span="5"
                 style="display:flex;justify-content:flex-end;margin-right:1rem"
@@ -271,10 +272,12 @@ export default {
         });
       } else if (status === 5) {
         //标题处新增内容
+        this.directory.primary[i1].secondary = [];
         this.directory.primary[i1].secondary.push({
           title: data[0].value,
           author: data[1].value
         });
+        console.log(1);
       }
       await this.$http.put(`rest/directories/${this.id}`, this.directory);
       this.$message({ type: "success", message: "保存成功" });

@@ -188,7 +188,7 @@ export default {
     }
   },
   created() {
-    // this.id && this.fetch();
+    this.id && this.fetch();
     this.fetchMag();
   }
 };

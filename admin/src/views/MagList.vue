@@ -12,7 +12,13 @@
         </el-table-column> -->
         <el-table-column prop="host" label="主办方"> </el-table-column>
         <el-table-column prop="cycle" label="出版周期"> </el-table-column>
-        <el-table-column prop="language" label="语种"> </el-table-column>
+        <el-table-column prop="language" label="语种">
+          <template slot-scope="scope">
+            <span v-for="item in scope.row.language" :key="item">
+              {{ item }} {{ ";" }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="ISSN" label="ISSN"> </el-table-column>
         <el-table-column prop="CN" label="CN"> </el-table-column>
         <el-table-column prop="initiateDate" label="创刊时间">
@@ -72,7 +78,7 @@ export default {
   },
   created() {
     this.fetch();
-    this.init();
+    // this.init();
   }
 };
 </script>

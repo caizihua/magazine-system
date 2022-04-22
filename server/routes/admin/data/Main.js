@@ -4,7 +4,7 @@ module.exports = [{
   ISSN: "1671-5241",
   cycle: "月刊",
   CN: "11-4789/D",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2001
 }, {
   name: "月读",
@@ -12,7 +12,7 @@ module.exports = [{
   ISSN: "2095-2988",
   cycle: "月刊",
   CN: "10-1037/C",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2012
 }, {
   name: "含笑花",
@@ -20,7 +20,7 @@ module.exports = [{
   ISSN: "1003-9503",
   cycle: "双月刊",
   CN: "53-1024/I",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1985
 }, {
   name: "漫画月刊",
@@ -28,7 +28,7 @@ module.exports = [{
   ISSN: "1003-7128",
   cycle: "旬刊",
   CN: "41-1057/J",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1985
 }, {
   name: "读者.原创版",
@@ -36,7 +36,7 @@ module.exports = [{
   ISSN: "1673-3274",
   cycle: "月刊",
   CN: "62-1190/Z",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2004
 }, {
   name: "求实",
@@ -44,7 +44,7 @@ module.exports = [{
   ISSN: "1007-8487",
   cycle: "双月刊",
   CN: "36-1003/D",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1959
 }, {
   name: "作文",
@@ -52,7 +52,7 @@ module.exports = [{
   ISSN: "1002-8048",
   cycle: "周刊",
   CN: "41-1037/G4",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1981
 }, {
   name: "作品",
@@ -60,7 +60,7 @@ module.exports = [{
   ISSN: "1005-9385",
   cycle: "月刊",
   CN: "44-1078/I",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1955
 }, {
   name: "小说评论",
@@ -68,7 +68,7 @@ module.exports = [{
   ISSN: "1004-2164",
   cycle: "双月刊",
   CN: "61-1044/J",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1985
 }, {
   name: "女友(花园版)",
@@ -76,7 +76,7 @@ module.exports = [{
   ISSN: "1672-9757",
   cycle: "季刊",
   CN: "61-1438/G",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 1988
 }, {
   name: "金色年代",
@@ -84,12 +84,12 @@ module.exports = [{
   ISSN: "1673-8543",
   cycle: "半年刊",
   CN: "31-1994/C",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2008
 }, {
   name: "后学衡",
   host: "西南大学文学院",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2017
 }, {
   name: "日本侵华南京大屠杀研究",
@@ -97,6 +97,6 @@ module.exports = [{
   ISSN: "2096-4587",
   cycle: "季刊",
   CN: "32-1877/K",
-  languages: ["中文"],
+  language: ["中文"],
   initiateDate: 2011
 }]

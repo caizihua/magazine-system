@@ -16,7 +16,7 @@ module.exports = (app) => {
   //9资源转换中间件
   const resourceMiddleware = require("../../middleware/resource");
   const uploadMiddleware = require("../../middleware/upload");
-
+  const svgCaptcha = require("svg-captcha")
   router.post("/", async (req, res) => {
     let model = null;
     if (req.Model.modelName === "Period") {
@@ -74,29 +74,14 @@ module.exports = (app) => {
     resourceMiddleware(),
     router
   );
-  //初始化资源
+  //初始化快速录入资源
+  app.use(
+    "/admin/api/init/:resource",
+    authMiddleware(),
+    resourceMiddleware(),
+    routerInit
+  );
   routerInit.get("/", async (req, res) => {
-    /*if (req.Model.modelName === "Category") {
-      const categories = require("./data/Category")
-      await Category.deleteMany({});
-      await Category.insertMany(categories.parent);
-      let data;
-      data = await Category.find()
-      categories.child.map((e, i) => {
-        e.map((v) => {
-          v.parent = data[i]._id
-        })
-        Category.insertMany(e);
-      })
-      data = await Category.find()
-      res.send(data)
-    } else if (req.Model.modelName === "Main") {
-      const main = require("./data/Main")
-      await Main.deleteMany({});
-      await Main.insertMany(main);
-      let data = await Main.find()
-      res.send(data)
-    }*/
     let name = req.Model.modelName;
     const data = require(`./data/${name}`);
     await req.Model.deleteMany({});
@@ -105,25 +90,24 @@ module.exports = (app) => {
     } else {
       await req.Model.insertMany(data);
     }
-    let getData;
-    getData = await Category.find()
     if (name === "Category") {
-      getData.child.map((e, i) => {
-        e.map((v) => {
-          v.parent = data[i]._id
+      let arr = []
+      data.child.map(async (e, i) => {
+        let parent = await Category.find(data.parent[i])
+        e.map((item) => {
+          arr.push({
+            name: item.name,
+            parent: parent[0]._id
+          })
         })
-        req.Model.insertMany(e);
+        console.log(arr)
+        await req.Model.insertMany(arr);
+        arr = []
       })
-      getData = await req.Model.find()
     }
+    let getData = await req.Model.find()
     res.send(getData)
   })
-  app.use(
-    "/admin/api/init/:resource",
-    authMiddleware(),
-    resourceMiddleware(),
-    routerInit
-  );
   //7上传文件代码   
   app.post(
     "/admin/api/upload/swiper/:name",
@@ -141,17 +125,31 @@ module.exports = (app) => {
       res.send(req.file)
     }
   );
+  //验证码
+  let captchaCode = ''
+  app.get('/admin/api/getCode', (req, res) => {
+    let captcha = svgCaptcha.create({
+      size:4,//验证码长度
+      ignoreChar:'0oi1',
+      noise:3
+    });
+    captchaCode = captcha.text.toLocaleUpperCase();
+    res.type('svg'); 
+    res.send(captcha.data);
+  })
   //8token
   app.post("/admin/api/login", async (req, res) => {
     const {
       username,
-      password
+      password,
+      code
     } = req.body;
     const user = await AdminUser.findOne({
       username
     }).select("+password");
-    assert(
-      username !== "", 422, "请输入用户名");
+    assert(username !== "", 422, "请输入用户名");
+    assert(code.toLocaleUpperCase() === captchaCode , 422, "验证码不正确");
+    assert(password !== "", 422, "请输入密码");
     assert(user, 422, "用户不存在");
     const isValid = require("bcrypt").compareSync(password, user.password);
     assert(isValid, 422, "密码错误");

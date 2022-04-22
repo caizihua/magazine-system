@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="about" type="flex" justify="center">
-      <el-col :span="10">
+      <el-col :span="16">
         <el-card>
           <template slot="header">
             <h1>管理员列表</h1>
@@ -13,11 +13,10 @@
             >新增</el-button
           >
           <el-table :data="items">
-            <el-table-column prop="_id" label="ID" width="250">
+            <el-table-column prop="_id" label="ID" fit> </el-table-column>
+            <el-table-column prop="username" label="用户名" fit>
             </el-table-column>
-            <el-table-column prop="username" label="用户名" width="190">
-            </el-table-column>
-            <el-table-column label="操作" width="210">
+            <el-table-column label="操作" fit>
               <template slot-scope="scope">
                 <el-button
                   type="primary"

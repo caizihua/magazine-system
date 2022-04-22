@@ -68,12 +68,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="form = {}">重置</el-button>
-          </el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="form = {}">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -98,12 +94,12 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="240">
         <template slot-scope="scope">
-          <el-button
+          <!--<el-button
             type="primary"
             size="small"
             @click="$router.push(`/periods/edit/${scope.row._id}`)"
             >查看</el-button
-          >
+          >-->
           <el-button
             type="primary"
             size="small"
@@ -135,8 +131,8 @@ export default {
   },
   methods: {
     changeName(items, magazines) {
-      items.forEach(item => {
-        magazines.forEach(mag => {
+      items.map(item => {
+        magazines.map(mag => {
           if (mag._id === item.name) {
             item.name = mag.name;
           }

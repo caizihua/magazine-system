@@ -15,7 +15,7 @@
           </el-form-item>
           <el-form-item
             label="密码"
-            :rules="[{ required: true, message: '请输入密码' }]"
+            :rules="{ required: true, message: '请输入密码' }"
             prop="password"
           >
             <el-input type="password" v-model="model.password"></el-input>
@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       model: {
-        name: ""
+        name: "",
+        password: ""
       }
     };
   },

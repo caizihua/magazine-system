@@ -121,7 +121,8 @@ export default {
         { value: "中文", label: "中文" },
         { value: "英文", label: "英文" },
         { value: "法文", label: "法文" },
-        { value: "德文", label: "德文" }
+        { value: "德文", label: "德文" },
+        { value: "俄文", label: "俄文" }
       ],
       categories: []
     };
@@ -149,7 +150,6 @@ export default {
     async fetch() {
       const res = await this.$http.get(`rest/main/${this.id}`);
       this.model = res.data;
-      console.log(this.model);
     },
     async fetchCategories() {
       const res = await this.$http.get(`rest/categories`);

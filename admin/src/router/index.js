@@ -33,7 +33,7 @@ const routes = [
     }
   },
   {
-    path: "/Register",
+    path: "/register",
     name: "Register",
     component: Register,
     meta: {
